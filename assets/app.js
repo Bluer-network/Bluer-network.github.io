@@ -39,9 +39,10 @@ const MODALS = {
     body() {
       const members = [
         { name: 'Bluerworker', role: 'Owner & Dev' },
-        { name: 'G_Game',      role: 'Owner' },
-        { name: 'Viper',       role: 'Moderator' },
-        { name: 'Sackboy',     role: 'Moderator' },
+        { name: 'Viper',      role: 'Owner' },
+        { name: 'DyDyMiku',       role: 'Administrator' },
+        { name: 'Vin',     role: 'Administrator' },
+        { name: 'Our Community',     role: 'Super Awesome Supporters / Players!' },
       ];
       return `<div class="team-grid">${members.map(m => `
         <div class="team-card">
