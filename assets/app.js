@@ -39,7 +39,7 @@ const MODALS = {
     body() {
       const members = [
         { name: 'Bluerworker', role: 'Owner & Dev' },
-        { name: 'Viper',      role: 'Owner' },
+        { name: 'Viper',      role: 'Owner & Dev' },
         { name: 'DyDyMiku',       role: 'Administrator' },
         { name: 'Vin',     role: 'Administrator' },
         { name: 'Our Community',     role: 'Super Awesome Supporters / Players!' },
