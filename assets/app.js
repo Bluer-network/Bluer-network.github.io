@@ -40,7 +40,7 @@ const MODALS = {
       const members = [
         { name: 'Bluerworker', role: 'Owner & Dev' },
         { name: 'Viper',      role: 'Owner & Dev' },
-        { name: 'DyDyMiku',       role: 'Administrator' },
+        { name: 'dydymiku',       role: 'Administrator' },
         { name: 'Vin',     role: 'Administrator' },
         { name: 'Our Community',     role: 'Super Awesome Supporters / Players!' },
       ];
