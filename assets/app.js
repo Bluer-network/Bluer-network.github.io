@@ -51,14 +51,6 @@ const MODALS = {
     }
   },
 
-  chat: {
-    title: 'Live Chat',
-    body() {
-      return `<div class="chat-log" id="modal-chat-log"><p class="chat-empty">Loading...</p></div>`;
-    },
-    onOpen() { fetchChat('modal-chat-log'); }
-  },
-
   info: {
     title: 'Rules & FAQ',
     body() {
