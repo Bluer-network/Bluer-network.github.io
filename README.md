@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=Bluer%20Network&fontSize=50&fontAlignY=35&animation=fadeIn&desc=Legacy%20Console%20Edition%20Skyblock%20Multiplayer&descAlignY=55" />
+<img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=Bluer%20Network&fontSize=50&fontAlignY=35&animation=fadeIn&desc=Legacy%20Console%20Edition%20%20Multiplayer&descAlignY=55" />
 
 <br>
 
