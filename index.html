@@ -9,6 +9,15 @@
 <body>
   <div class="overlay-dirt" aria-hidden="true"></div>
   <div class="overlay-vignette" aria-hidden="true"></div>
+  <div class="crack-overlay" id="crack-overlay" aria-hidden="true"><canvas id="crack-canvas"></canvas></div>
+  <div class="shatter-container" id="shatter-container" aria-hidden="true"></div>
+  <div class="secret-reveal" id="secret-reveal">
+    <span class="achievement-icon">&#x1F4A5;</span>
+    <span class="achievement-title">Achievement Unlocked!</span>
+    <span class="achievement-name">Desktop Destroyer</span>
+    <span class="achievement-desc">You broke the entire screen.</span>
+    <button class="mc-btn restart-btn" onclick="resetBreakingEffect()">Try Again</button>
+  </div>
   <main class="screen">
     <header class="logo-block">
       <h1 class="logo-title">Bluer Network</h1>
@@ -44,7 +53,7 @@
       <a href="https://discord.gg/x4BuDfpgsE" target="_blank" rel="noopener" class="mc-btn">Join our Discord</a>
       <button class="mc-btn" id="music-btn" onclick="toggleMusic()"><span id="music-label">Play Music</span></button>
       <div class="btn-divider"></div>
-      <button class="mc-btn mc-btn--secret" onclick="openModal('secret')">???</button>
+      <button class="mc-btn mc-btn--secret" onclick="triggerBreakingEffect()">???</button>
     </nav>
     <footer class="site-footer">
       Not affiliated with Mojang or Microsoft.
