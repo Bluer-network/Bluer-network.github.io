@@ -8,8 +8,8 @@
 
 <br><br>
 
-<img src="https://img.shields.io/github/last-commit/Blues-smp/Blues-smp.github.io?style=for-the-badge">
-<img src="https://img.shields.io/github/languages/top/Blues-smp/Blues-smp.github.io?style=for-the-badge">
+<img src="https://img.shields.io/github/last-commit/Bluer-network/Bluer-network.github.io?style=for-the-badge">
+<img src="https://img.shields.io/github/languages/top/Bluer-network/Bluer-network.github.io?style=for-the-badge">
 
 </div>
 
@@ -19,7 +19,7 @@
 
 Second oldest LCE server! We have our own authentication system and a laid-back community of players who love Minecraft: Legacy Console Edition. Whether you're looking to build, survive, or just hang out with other LCE players, you're welcome to join us.
 
-This repository contains the source code for the official Blue's SMP website.
+This repository contains the source code for the official Bluer network website.
 
 ---
 
@@ -31,10 +31,10 @@ This repository contains the source code for the official Blue's SMP website.
 
 | Setting | Value                            |
 | ------- | -------------------------------- |
-| Name    | Blue's SMP                       |
+| Name    | Bluer network                    |
 | Edition | Minecraft Legacy Console Edition |
-| Mode    | Survival Multiplayer             |
-| Address | `blues-smp.ddns.net`             |
+| Mode    | Multiplayer                      |
+| Address | `bluer-network.ddns.net`         |
 | Port    | `25565`                          |
 
 ---
@@ -42,7 +42,7 @@ This repository contains the source code for the official Blue's SMP website.
 
 ## Partnership
 
-Blue's SMP is proudly partnered with LCE Network.
+Blue's SMP is proudly partner with LCE hub, LCE guys..
 
 ---
 
@@ -56,7 +56,7 @@ Minecraft is a trademark of Mojang Studios.
 
 <div align="center">
 
-Blue's SMP
+Bluer network.
 
 Legacy Console Edition Survival Multiplayer
 
