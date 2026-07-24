@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=Bluer%20Snetwork&fontSize=50&fontAlignY=35&animation=fadeIn&desc=Legacy%20Console%20Edition%20Skyblock%20Multiplayer&descAlignY=55" />
+<img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=Bluer%20Network&fontSize=50&fontAlignY=35&animation=fadeIn&desc=Legacy%20Console%20Edition%20Skyblock%20Multiplayer&descAlignY=55" />
 
 <br>
 
@@ -42,7 +42,7 @@ This repository contains the source code for the official Bluer network website.
 
 ## Partnership
 
-Blue's SMP is proudly partner with LCE hub, LCE guys..
+Bluer Network is proudly partner with LCE hub and LCE guys..
 
 ---
 
@@ -56,9 +56,9 @@ Minecraft is a trademark of Mojang Studios.
 
 <div align="center">
 
-Bluer network.
+Bluer Network.
 
-Legacy Console Edition Survival Multiplayer
+Legacy Console Edition Multiplayer
 
 </div>
 
