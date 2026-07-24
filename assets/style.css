@@ -487,6 +487,22 @@ body {
 }
 body.shaking { animation: screen-shake var(--shake-speed, 0.1s) infinite; }
 
+.break-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(255, 255, 220, 0.6);
+  pointer-events: none;
+  opacity: 0;
+}
+.break-flash.flash {
+  animation: break-flash-anim 0.35s ease-out forwards;
+}
+@keyframes break-flash-anim {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 .shatter-container {
   position: fixed;
   inset: 0;
