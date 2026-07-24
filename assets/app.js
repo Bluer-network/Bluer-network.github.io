@@ -238,39 +238,50 @@ window.triggerBreakingEffect = function() {
   canvas.height = h * dpr;
   ctx.scale(dpr, dpr);
 
-  overlay.classList.add('active');
-  document.body.classList.add('shaking');
-  document.body.style.setProperty('--shake-speed', '0.1s');
+  const cx = w / 2;
+  const cy = h / 2;
+  const maxDist = Math.hypot(cx, cy);
 
-  let allLines = [];
-  let stage    = 0;
-  const totalStages = 10;
+  const stages = Array.from({ length: 10 }, () => []);
+  const numBranches = 8 + Math.floor(Math.random() * 5);
 
-  function addCrackLines(count) {
-    const lines = [];
-    for (let i = 0; i < count; i++) {
-      const sx = Math.random() * w;
-      const sy = Math.random() * h;
-      const pts = [{ x: sx, y: sy }];
-      let x = sx, y = sy;
-      const segs = 2 + Math.floor(Math.random() * 4);
-      for (let j = 0; j < segs; j++) {
-        const angle = Math.random() * Math.PI * 2;
-        const len   = 15 + Math.random() * 50;
-        x += Math.cos(angle) * len;
-        y += Math.sin(angle) * len;
-        pts.push({ x, y });
+  for (let b = 0; b < numBranches; b++) {
+    const baseAngle = (b / numBranches) * Math.PI * 2 + (Math.random() - 0.5) * 0.4;
+    let angle = baseAngle;
+    let x = cx, y = cy;
+    const segs = 4 + Math.floor(Math.random() * 6);
+
+    for (let s = 0; s < segs; s++) {
+      angle += (Math.random() - 0.5) * 0.7;
+      const len = 12 + Math.random() * 35;
+      const nx = x + Math.cos(angle) * len;
+      const ny = y + Math.sin(angle) * len;
+      const dist = Math.hypot(nx - cx, ny - cy);
+      const stageIdx = Math.min(9, Math.floor((dist / maxDist) * 12));
+
+      stages[stageIdx].push([{ x, y }, { x: nx, y: ny }]);
+
+      if (Math.random() < 0.35) {
+        const subAngle = angle + (Math.random() - 0.5) * 1.4;
+        const subLen   = 6 + Math.random() * 18;
+        const sx = x + Math.cos(subAngle) * subLen;
+        const sy = y + Math.sin(subAngle) * subLen;
+        stages[Math.min(9, stageIdx + 1)].push([{ x, y }, { x: sx, y: sy }]);
       }
-      lines.push(pts);
+
+      x = nx;
+      y = ny;
     }
-    return lines;
   }
+
+  let drawnLines = [];
+  let stage = 0;
 
   function drawAll() {
     ctx.clearRect(0, 0, w, h);
-    for (const line of allLines) {
+    for (const line of drawnLines) {
       ctx.beginPath();
-      ctx.strokeStyle = `rgba(0, 0, 0, ${0.4 + Math.random() * 0.3})`;
+      ctx.strokeStyle = `rgba(0, 0, 0, ${0.45 + Math.random() * 0.25})`;
       ctx.lineWidth   = 1 + Math.random() * 2;
       ctx.lineCap     = 'round';
       ctx.lineJoin    = 'round';
@@ -282,23 +293,31 @@ window.triggerBreakingEffect = function() {
     }
   }
 
+  overlay.classList.add('active');
+  document.body.classList.add('shaking');
+  document.body.style.setProperty('--shake-speed', '0.1s');
+
   const interval = setInterval(() => {
-    const newLines = addCrackLines(2 + stage);
-    allLines = allLines.concat(newLines);
+    drawnLines = drawnLines.concat(stages[stage]);
     drawAll();
     stage++;
 
     if (stage > 5) {
       document.body.style.setProperty('--shake-speed', '0.06s');
     }
-    if (stage >= totalStages) {
+    if (stage >= 10) {
       clearInterval(interval);
       setTimeout(() => shatterAndReveal(), 400);
     }
-  }, 180);
+  }, 200);
 
   function shatterAndReveal() {
     overlay.classList.remove('active');
+
+    const flash = $('break-flash');
+    flash.classList.remove('flash');
+    void flash.offsetWidth;
+    flash.classList.add('flash');
 
     const screen    = document.querySelector('.screen');
     const rect      = screen.getBoundingClientRect();
@@ -318,11 +337,15 @@ window.triggerBreakingEffect = function() {
         frag.style.width  = `${fragW + 1}px`;
         frag.style.height = `${fragH + 1}px`;
 
-        const delay = Math.random() * 300 + r * 30;
-        const rotX  = (Math.random() - 0.5) * 400;
-        const rotZ  = (Math.random() - 0.5) * 200;
-        const transX = (Math.random() - 0.5) * 400;
-        const transY = 200 + Math.random() * 400;
+        const fragCx = rect.left + c * fragW + fragW / 2;
+        const fragCy = rect.top + r * fragH + fragH / 2;
+        const awayX  = (fragCx - (rect.left + rect.width / 2)) * 0.8;
+        const awayY  = (fragCy - (rect.top + rect.height / 2)) * 0.6;
+        const delay  = Math.random() * 300 + r * 30;
+        const rotX   = (Math.random() - 0.5) * 300;
+        const rotZ   = (Math.random() - 0.5) * 200;
+        const transX = awayX + (Math.random() - 0.5) * 200;
+        const transY = awayY + 150 + Math.random() * 350;
 
         frag.style.transitionDelay = `${delay}ms`;
         container.appendChild(frag);
@@ -349,6 +372,7 @@ window.triggerBreakingEffect = function() {
 
 window.resetBreakingEffect = function() {
   $('crack-overlay').classList.remove('active');
+  $('break-flash').classList.remove('flash');
   $('shatter-container').innerHTML = '';
   $('secret-reveal').classList.remove('visible');
   document.querySelector('.screen').style.opacity = '1';
