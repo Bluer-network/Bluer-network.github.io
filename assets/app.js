@@ -2,11 +2,13 @@
 
 const $ = id => document.getElementById(id);
 
+
 function esc(s) {
   const d = document.createElement('div');
   d.textContent = String(s ?? '');
   return d.innerHTML;
 }
+
 
 const MODALS = {
   about: {
@@ -19,6 +21,7 @@ const MODALS = {
       `;
     }
   },
+
 
   connect: {
     title: 'How to Connect',
@@ -33,6 +36,7 @@ const MODALS = {
       `;
     }
   },
+
 
   team: {
     title: 'Server Team',
@@ -51,6 +55,7 @@ const MODALS = {
         </div>`).join('')}</div>`;
     }
   },
+
 
   info: {
     title: 'Rules & FAQ',
@@ -72,6 +77,7 @@ const MODALS = {
     }
   },
 
+
   secret: {
     title: '???',
     body() {
@@ -85,6 +91,7 @@ const MODALS = {
   }
 };
 
+
 function openModal(key) {
   const def = MODALS[key];
   if (!def) return;
@@ -95,16 +102,20 @@ function openModal(key) {
   if (typeof def.onOpen === 'function') def.onOpen();
 }
 
+
 function closeModal() {
   $('modal').classList.remove('open');
   document.body.style.overflow = '';
 }
 
+
 $('modal').addEventListener('click', e => { if (e.target === $('modal')) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
+
 window.openModal  = openModal;
 window.closeModal = closeModal;
+
 
 window.copyIP = function(btn) {
   const ip   = 'blues-.ddns.net';
@@ -124,6 +135,7 @@ window.copyIP = function(btn) {
   });
 };
 
+
 window.toggleMusic = function() {
   const audio = $('bgm');
   const label = $('music-label');
@@ -135,6 +147,7 @@ window.toggleMusic = function() {
     label.textContent = 'Play Music';
   }
 };
+
 
 async function fetchStatus() {
   const led   = $('status-led');
@@ -157,8 +170,10 @@ async function fetchStatus() {
   }
 }
 
+
 fetchStatus();
 setInterval(fetchStatus, 10_000);
+
 
 async function fetchChat(targetId) {
   const box = $(targetId);
@@ -179,10 +194,12 @@ async function fetchChat(targetId) {
   }
 }
 
+
 setInterval(() => {
   const box = $('modal-chat-log');
   if (box) fetchChat('modal-chat-log');
 }, 4_000);
+
 
 (function() {
   const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
@@ -205,3 +222,140 @@ setInterval(() => {
     }
   });
 })();
+
+
+window.triggerBreakingEffect = function() {
+  const overlay = $('crack-overlay');
+  const canvas  = $('crack-canvas');
+  if (!canvas || overlay.classList.contains('active')) return;
+
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const w   = window.innerWidth;
+  const h   = window.innerHeight;
+
+  canvas.width  = w * dpr;
+  canvas.height = h * dpr;
+  ctx.scale(dpr, dpr);
+
+  overlay.classList.add('active');
+  document.body.classList.add('shaking');
+  document.body.style.setProperty('--shake-speed', '0.1s');
+
+  let allLines = [];
+  let stage    = 0;
+  const totalStages = 10;
+
+  function addCrackLines(count) {
+    const lines = [];
+    for (let i = 0; i < count; i++) {
+      const sx = Math.random() * w;
+      const sy = Math.random() * h;
+      const pts = [{ x: sx, y: sy }];
+      let x = sx, y = sy;
+      const segs = 2 + Math.floor(Math.random() * 4);
+      for (let j = 0; j < segs; j++) {
+        const angle = Math.random() * Math.PI * 2;
+        const len   = 15 + Math.random() * 50;
+        x += Math.cos(angle) * len;
+        y += Math.sin(angle) * len;
+        pts.push({ x, y });
+      }
+      lines.push(pts);
+    }
+    return lines;
+  }
+
+  function drawAll() {
+    ctx.clearRect(0, 0, w, h);
+    for (const line of allLines) {
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(0, 0, 0, ${0.4 + Math.random() * 0.3})`;
+      ctx.lineWidth   = 1 + Math.random() * 2;
+      ctx.lineCap     = 'round';
+      ctx.lineJoin    = 'round';
+      ctx.moveTo(line[0].x, line[0].y);
+      for (let i = 1; i < line.length; i++) {
+        ctx.lineTo(line[i].x, line[i].y);
+      }
+      ctx.stroke();
+    }
+  }
+
+  const interval = setInterval(() => {
+    const newLines = addCrackLines(2 + stage);
+    allLines = allLines.concat(newLines);
+    drawAll();
+    stage++;
+
+    if (stage > 5) {
+      document.body.style.setProperty('--shake-speed', '0.06s');
+    }
+    if (stage >= totalStages) {
+      clearInterval(interval);
+      setTimeout(() => shatterAndReveal(), 400);
+    }
+  }, 180);
+
+  function shatterAndReveal() {
+    overlay.classList.remove('active');
+
+    const screen    = document.querySelector('.screen');
+    const rect      = screen.getBoundingClientRect();
+    const container = $('shatter-container');
+
+    const cols  = 8;
+    const rows  = 10;
+    const fragW = rect.width / cols;
+    const fragH = rect.height / rows;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const frag = document.createElement('div');
+        frag.className = 'shatter-fragment';
+        frag.style.left   = `${rect.left + c * fragW}px`;
+        frag.style.top    = `${rect.top + r * fragH}px`;
+        frag.style.width  = `${fragW + 1}px`;
+        frag.style.height = `${fragH + 1}px`;
+
+        const delay = Math.random() * 300 + r * 30;
+        const rotX  = (Math.random() - 0.5) * 400;
+        const rotZ  = (Math.random() - 0.5) * 200;
+        const transX = (Math.random() - 0.5) * 400;
+        const transY = 200 + Math.random() * 400;
+
+        frag.style.transitionDelay = `${delay}ms`;
+        container.appendChild(frag);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            frag.style.transform = `translateY(${transY}px) translateX(${transX}px) rotateX(${rotX}deg) rotateZ(${rotZ}deg)`;
+            frag.style.opacity   = '0';
+          });
+        });
+      }
+    }
+
+    screen.style.transition = 'opacity 0.3s ease-out';
+    screen.style.opacity    = '0';
+
+    setTimeout(() => {
+      document.body.classList.remove('shaking');
+      $('secret-reveal').classList.add('visible');
+    }, 800);
+  }
+};
+
+
+window.resetBreakingEffect = function() {
+  $('crack-overlay').classList.remove('active');
+  $('shatter-container').innerHTML = '';
+  $('secret-reveal').classList.remove('visible');
+  document.querySelector('.screen').style.opacity = '1';
+  document.body.classList.remove('shaking');
+  const canvas = $('crack-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+};
