@@ -1,10 +1,10 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=Bluer%20SMP&fontSize=50&fontAlignY=35&animation=fadeIn&desc=Legacy%20Console%20Edition%20Survival%20Multiplayer&descAlignY=55" />
+<img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=Bluer%20Snetwork&fontSize=50&fontAlignY=35&animation=fadeIn&desc=Legacy%20Console%20Edition%20Skyblock%20Multiplayer&descAlignY=55" />
 
 <br>
 
-<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&size=22&duration=3000&pause=1000&center=true&vCenter=true&width=700&lines=Welcome+to+Bluer+network;Legacy+Console+Edition+Survival;Community+Driven+Gameplay;Built+for+Console+Players" />
+<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&size=22&duration=3000&pause=1000&center=true&vCenter=true&width=700&lines=Welcome+to+Bluer+network;Legacy+Console+Edition+Netowrk;Community+Driven+Gameplay;Built+for+Console+Players" />
 
 <br><br>
 
