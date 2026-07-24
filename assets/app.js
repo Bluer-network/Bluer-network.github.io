@@ -13,7 +13,7 @@ const MODALS = {
     title: 'About',
     body() {
       return `
-        <p>Blue's SMP is a <strong style="color:#fff">Legacy Console Edition</strong> survival server — lag-free, casual, and community-driven.</p>
+        <p>Bluer's Network is a <strong style="color:#fff">Legacy Console Edition</strong> PVP server — lag-free, casual, and community-driven.</p>
         <p>Build, explore, and survive with friends on a server that runs around the clock.</p>
         <p style="margin-top:14px;color:#555;font-size:11px;">Running TU19 + Revelations. Check Discord for the latest details.</p>
       `;
@@ -27,7 +27,7 @@ const MODALS = {
         <div class="steps">
           <div class="step"><span class="step-num">1</span><span>Join the Discord server via the button on the main screen</span></div>
           <div class="step"><span class="step-num">2</span><span>Complete verification in <span class="mc-code">#verify</span></span></div>
-          <div class="step"><span class="step-num">3</span><span>Post your in-game username in <span class="mc-code">#username-verify</span></span></div>
+          <div class="step"><span class="step-num">3</span><span>Post your in-game username in <span class="mc-code">#register-account</span></span></div>
           <div class="step"><span class="step-num">4</span><span>Join at <span class="mc-code">blues-smp.ddns.net</span> and run <span class="mc-code">/verify &lt;code&gt;</span></span></div>
         </div>
       `;
@@ -107,7 +107,7 @@ window.openModal  = openModal;
 window.closeModal = closeModal;
 
 window.copyIP = function(btn) {
-  const ip   = 'blues-smp.ddns.net';
+  const ip   = 'blues-.ddns.net';
   const orig = btn.innerHTML;
   navigator.clipboard.writeText(ip).then(() => {
     btn.textContent = 'Copied!';
@@ -197,7 +197,7 @@ setInterval(() => {
           <span class="heart" style="font-size:54px">&#127918;</span>
           <p style="color:#ffff55;font-size:14px;margin-bottom:8px">&#x2191;&#x2191;&#x2193;&#x2193;&#x2190;&#x2192;&#x2190;&#x2192;BA</p>
           <p style="color:#777;font-size:11px">You found it.</p>
-          <p style="margin-top:12px;color:#444;font-size:10px">Thanks for playing Blue's SMP &#x2764;</p>
+          <p style="margin-top:12px;color:#444;font-size:10px">Thanks for playing Blue's  &#x2764;</p>
         </div>`;
       openModal('secret');
       const restore = () => { MODALS.secret.body = orig; $('modal').removeEventListener('click', restore); };
