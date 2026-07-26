@@ -600,7 +600,7 @@
     // Status
     async function fetchStatus() {
       try {
-        const res = await fetch('http://173.212.207.246:4444/api/players');
+        const res = await fetch('https://bluer-network.ddns.net/api/players');
         const data = await res.json();
         const now = Math.floor(Date.now() / 1000);
         if (!data.time || (now - data.time) < 30) {
