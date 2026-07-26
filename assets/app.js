@@ -60,7 +60,7 @@ const MODALS = {
   info: {
     title: 'Rules & FAQ',
     body() {
-      const rules = ['No griefing', 'No hacking', 'Respect everyone', 'Have fun'];
+      const rules = ['No NSFW', 'No hacking', 'Respect everyone', 'Have fun'];
       const faqs = [
         { q: 'What versions?',      a: 'TU31 + Neo legacy. Check Discord for updates.' },
         { q: 'How do I join?',      a: 'Follow the How to Connect guide on the main page.' },
