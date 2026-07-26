@@ -17,7 +17,7 @@ const MODALS = {
       return `
         <p>Bluer's Network is a <strong style="color:#fff">Legacy Console Edition</strong> PVP server — lag-free, casual, and community-driven.</p>
         <p>Build, explore, and survive with friends on a server that runs around the clock.</p>
-        <p style="margin-top:14px;color:#555;font-size:11px;">Running TU19 + Revelations. Check Discord for the latest details.</p>
+        <p style="margin-top:14px;color:#555;font-size:11px;">Running TU31 + Neolegacy. Check Discord for the latest details.</p>
       `;
     }
   },
@@ -29,7 +29,7 @@ const MODALS = {
       return `
         <div class="steps">
           <div class="step"><span class="step-num">1</span><span>Join the Discord server via the button on the main screen</span></div>
-          <div class="step"><span class="step-num">2</span><span>Complete verification in <span class="mc-code">#verify</span></span></div>
+          <div class="step"><span class="step-num">2</span><span>Complete verification in <span class="mc-code">#how-to-register</span></span></div>
           <div class="step"><span class="step-num">3</span><span>Post your in-game username in <span class="mc-code">#register-account</span></span></div>
           <div class="step"><span class="step-num">4</span><span>Join at <span class="mc-code">blues-smp.ddns.net</span> and run <span class="mc-code">/verify &lt;code&gt;</span></span></div>
         </div>
