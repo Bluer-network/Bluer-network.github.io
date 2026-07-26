@@ -62,9 +62,9 @@ const MODALS = {
     body() {
       const rules = ['No griefing', 'No hacking', 'Respect everyone', 'Have fun'];
       const faqs = [
-        { q: 'What versions?',      a: 'TU19 + Revelations. Check Discord for updates.' },
+        { q: 'What versions?',      a: 'TU31 + Neo legacy. Check Discord for updates.' },
         { q: 'How do I join?',      a: 'Follow the How to Connect guide on the main page.' },
-        { q: 'Is it 24/7?',         a: 'Yes, the server runs around the clock.' },
+        { q: 'Is it 24/7?',         a: 'Yes.' },
         { q: 'Is it free to join?', a: 'Yes, join the Discord and verify to get access.' },
       ];
       return `
