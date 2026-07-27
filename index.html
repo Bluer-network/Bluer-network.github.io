@@ -603,7 +603,11 @@
         const res = await fetch('https://bluer-network.ddns.net/api/players');
         const data = await res.json();
         const now = Math.floor(Date.now() / 1000);
-        if (!data.time || (now - data.time) < 30) {
+        // Normalize: some plugins emit epoch milliseconds instead of seconds.
+        // A seconds-based timestamp for "now" is ~10 digits; ms is ~13 digits.
+        const rawTime = data.time || 0;
+        const t = rawTime > 1e12 ? Math.floor(rawTime / 1000) : rawTime;
+        if (!t || (now - t) < 60) {
           document.getElementById('s-dot').className = 'status-dot online';
           document.getElementById('s-text').textContent = 'Online';
           document.getElementById('s-text').className = 'status-text-online';
