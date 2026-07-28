@@ -3,627 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Bluer Network</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
-  <style>
-    @font-face {
-      font-family: 'Minecraft';
-      src: url('assets/Minecraftia.ttf') format('truetype');
-      font-weight: 400; font-style: normal;
-    }
-
-    :root {
-      --bg-dark: #1a1a1a;
-      --bg-panel: #2a2a2a;
-      --border-color: #3a3a3a;
-      --text-main: #e0e0e0;
-      --text-muted: #b0b0b0;
-      --accent: #58a6ff;
-      --accent-hover: #4493e6;
-      --accent-light: #88c8ff;
-      --accent-dark: #3377cc;
-      --accent-border: #2266aa;
-      --success: #55ff55;
-      --danger: #ff5555;
-      --discord: #5865F2;
-      --discord-hover: #4752c4;
-      --discord-border: #3d47a0;
-      --font-mc: 'Minecraft', 'Courier New', monospace;
-    }
-
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    ::-webkit-scrollbar { width: 12px; }
-    ::-webkit-scrollbar-track { background: var(--bg-dark); border-left: 2px solid var(--border-color); }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%); border: 2px solid var(--accent-border); }
-
-    body {
-      font-family: var(--font-mc);
-      min-height: 100vh;
-      display: flex; justify-content: center; align-items: flex-start;
-      padding: 4rem 1rem;
-      background: url('assets/oldpage/background.png') center center / cover fixed no-repeat var(--bg-dark);
-      color: var(--text-main);
-      -webkit-font-smoothing: none;
-      letter-spacing: 0.005em;
-    }
-
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.55);
-      pointer-events: none; z-index: 0;
-    }
-
-    .container, .tab-content, .section, h1, h2, h3, h4, .nav-tab, img {
-      image-rendering: pixelated;
-    }
-
-    .container {
-      background: var(--bg-panel);
-      border: 4px solid var(--bg-dark);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.7), inset 0 0 0 4px var(--border-color);
-      border-radius: 6px;
-      width: 100%; max-width: 900px; margin: 0 auto;
-      padding: 2.5rem; position: relative; z-index: 1;
-      display: flex; flex-direction: column; gap: 1.5rem;
-    }
-
-    /* ── Header ── */
-    .header-banner {
-      display: flex; flex-direction: column; align-items: center;
-      text-align: center; gap: 1rem; margin-bottom: 1rem;
-    }
-    .header-banner h1 {
-      font-size: clamp(28px, 6vw, 42px); color: var(--accent-light);
-      text-shadow: 3px 3px 0 var(--bg-dark), 0 0 12px rgba(85,255,181,0.3);
-      letter-spacing: 3px;
-    }
-    .subtitle { color: var(--text-muted); font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; }
-
-    /* ── Load Bar ── */
-    .page-load-bar {
-      position: fixed; top: 0; left: 0; width: 0; height: 4px;
-      background: linear-gradient(90deg, var(--accent-border), var(--accent), var(--accent-light));
-      z-index: 99999; box-shadow: 0 0 8px var(--accent); transition: width 0.3s;
-    }
-
-    /* ── Tabs ── */
-    .nav-tabs-wrapper { width: 100%; max-width: 800px; margin: 0 auto 1rem; }
-    .nav-tabs { display: flex; width: 100%; border-bottom: 4px solid var(--border-color); }
-    .nav-tab {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 6px; padding: 12px 8px;
-      background: var(--bg-dark); color: var(--text-main);
-      border: 3px solid var(--border-color); border-bottom: none; border-right: none;
-      cursor: pointer; font-family: var(--font-mc); font-size: 12px;
-      text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s;
-      box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2);
-    }
-    .nav-tab:first-child { border-radius: 4px 0 0 0; border-left: 3px solid var(--border-color); }
-    .nav-tab:last-child { border-radius: 0 4px 0 0; border-right: 3px solid var(--border-color); }
-    .nav-tab:hover { background: var(--bg-panel); }
-    .nav-tab.active {
-      background: linear-gradient(180deg, var(--accent) 0%, var(--accent-dark) 100%);
-      color: var(--bg-dark); border-color: var(--accent-border);
-      box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), 0 5px 10px rgba(0,0,0,0.3);
-    }
-    .nav-tab i { font-size: 16px; }
-    .tab-content { display: none; animation: fadeIn 0.3s ease-in; }
-    .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ── Server IP Box ── */
-    .server-ip-box {
-      background: var(--bg-dark); border: 3px solid var(--border-color);
-      border-radius: 6px; padding: 1.5rem; margin: 0 auto 2rem;
-      max-width: 650px; width: 100%;
-      display: flex; flex-direction: column; gap: 1rem;
-      box-shadow: 0 6px 0 var(--bg-dark), 0 8px 20px rgba(0,0,0,0.3);
-    }
-    .server-status-banner {
-      background: var(--bg-panel); border: 2px solid var(--border-color);
-      padding: 12px 20px; border-radius: 4px;
-      display: flex; justify-content: space-between; align-items: center;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
-    }
-    .status-group { display: flex; align-items: center; gap: 8px; }
-    .status-dot { width: 12px; height: 12px; border-radius: 50%; }
-    .status-dot.online { background: var(--success); animation: pulse-green 2s infinite; }
-    .status-dot.offline { background: var(--danger); animation: pulse-red 2s infinite; }
-    @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(85,255,85,0.7); } 70% { box-shadow: 0 0 0 10px rgba(85,255,85,0); } 100% { box-shadow: 0 0 0 0 rgba(85,255,85,0); } }
-    @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(255,85,85,0.7); } 70% { box-shadow: 0 0 0 10px rgba(255,85,85,0); } 100% { box-shadow: 0 0 0 0 rgba(255,85,85,0); } }
-    .status-text-offline { color: var(--danger); text-transform: uppercase; font-weight: bold; }
-    .status-text-online { color: var(--success); text-transform: uppercase; font-weight: bold; }
-    .player-count-pill {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--bg-dark); padding: 6px 16px; border-radius: 20px;
-      border: 2px solid var(--border-color);
-    }
-    .player-count-value { color: var(--accent-light); font-size: 1.2rem; font-weight: bold; }
-    .icon-muted { color: var(--text-muted); }
-
-    .ip-info-row {
-      display: flex; align-items: center; justify-content: space-between;
-      background: var(--bg-panel); padding: 12px 20px; border-radius: 4px;
-      border: 2px solid var(--border-color); gap: 15px;
-    }
-    .ip-line { font-size: 1.2rem; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .ip-line .label { color: var(--text-muted); text-transform: uppercase; }
-    .ip-line .value { color: var(--accent-light); font-weight: bold; letter-spacing: 1px; }
-
-    /* ── Buttons ── */
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 10px 16px; font-family: var(--font-mc); font-size: 0.95rem;
-      cursor: pointer; text-transform: uppercase; border-radius: 4px;
-      transition: all 0.15s; text-decoration: none; border: 3px solid transparent; font-weight: bold;
-    }
-    .btn-copy {
-      background: var(--accent); color: var(--bg-dark); border-color: var(--accent-border);
-      box-shadow: 0 4px 0 var(--accent-dark); flex-shrink: 0;
-    }
-    .btn-copy:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 6px 0 var(--accent-dark); }
-    .btn-copy:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-dark); }
-    .btn-discord {
-      background: var(--discord); color: white; border-color: var(--discord-border);
-      padding: 15px 30px; font-size: 1.1rem;
-      box-shadow: 0 5px 0 #2e3799, 0 0 18px rgba(88,101,242,0.35);
-      letter-spacing: 2px; text-shadow: 0 2px 0 rgba(0,0,0,0.4);
-    }
-    .btn-discord:hover { background: var(--discord-hover); transform: translateY(-2px); box-shadow: 0 7px 0 #3d47a0; text-decoration: none; }
-    .btn-discord:active { transform: translateY(3px); box-shadow: 0 2px 0 #3d47a0; }
-
-    .discord-banner { text-align: center; margin: 1rem 0 1.5rem; }
-
-    /* ── Sections ── */
-    .section { margin-bottom: 2rem; }
-    .section-title {
-      font-size: 1.4rem; color: var(--accent-light); font-weight: 800;
-      margin-bottom: 1rem; padding-bottom: 10px; border-bottom: 4px solid var(--accent-hover);
-      text-transform: uppercase; letter-spacing: 2px;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .section-title i { font-size: 1.1rem; }
-
-    .info-card {
-      background: var(--bg-dark); padding: 1.5rem; border-radius: 4px;
-      border: 3px solid var(--border-color);
-      box-shadow: 0 6px 0 var(--bg-dark), 0 8px 20px rgba(0,0,0,0.2);
-      line-height: 1.8; font-size: 0.9rem;
-    }
-
-    /* ── Feature List ── */
-    .feature-list { list-style: none; }
-    .feature-list li {
-      display: flex; align-items: flex-start; gap: 12px;
-      padding: 10px 0; border-bottom: 1px dashed var(--border-color); line-height: 1.6;
-    }
-    .feature-list li:last-child { border-bottom: none; }
-    .feature-list i { color: var(--accent-light); font-size: 1.1rem; margin-top: 3px; flex-shrink: 0; }
-    .feature-list strong { color: var(--accent-light); }
-    .feature-highlight {
-      background: rgba(85,255,181,0.15); padding: 2px 6px; border-radius: 3px; font-weight: 700;
-    }
-
-    /* ── Server Details ── */
-    .server-details-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
-    }
-    .server-detail-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 12px 15px; background: var(--bg-panel);
-      border: 2px solid var(--border-color); border-radius: 4px;
-    }
-    .server-detail-item i { color: var(--accent-light); font-size: 1.2rem; }
-    .server-detail-item .detail-label { color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; }
-    .server-detail-item .detail-value { color: var(--text-main); font-weight: 700; }
-
-    /* ── Steps ── */
-    .steps { display: flex; flex-direction: column; gap: 10px; }
-    .step {
-      display: flex; align-items: center; gap: 14px;
-      padding: 14px 16px; background: var(--bg-dark);
-      border: 3px solid var(--border-color); border-left: 5px solid var(--accent);
-      border-radius: 0 4px 4px 0; font-size: 0.9rem; color: #ccc;
-    }
-    .step-num {
-      width: 28px; height: 28px; border-radius: 4px;
-      background: var(--bg-panel); border: 2px solid var(--accent-border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700; color: var(--accent-light); flex-shrink: 0;
-    }
-    .mc-code {
-      background: rgba(0,0,0,0.45); border: 1px solid var(--border-color);
-      padding: 1px 7px; border-radius: 3px;
-      font-family: var(--font-mc); font-size: 0.8rem; color: var(--accent-light);
-    }
-
-    /* ── Info Note ── */
-    .info-note {
-      display: flex; align-items: center; gap: 12px;
-      padding: 15px; background: var(--bg-dark);
-      border-left: 5px solid var(--accent-light);
-      border-top: 3px solid var(--border-color);
-      border-right: 3px solid var(--border-color);
-      border-bottom: 3px solid var(--border-color);
-      border-radius: 4px; margin-top: 1rem;
-    }
-    .info-note i { color: var(--accent-light); font-size: 1.5rem; }
-    .info-note span { font-weight: 700; color: var(--text-muted); }
-
-    /* ── Team ── */
-    .authors {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;
-    }
-    .author-card {
-      background: var(--bg-dark); padding: 1.5rem; border-radius: 4px;
-      text-align: center; border: 3px solid var(--border-color);
-      box-shadow: 0 6px 0 var(--bg-dark); transition: transform 0.2s;
-    }
-    .author-card:hover { transform: translateY(-4px); box-shadow: 0 10px 0 var(--bg-dark); }
-    .author-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 5px; }
-    .author-role { font-size: 0.9rem; color: var(--accent-light); font-weight: 600; text-transform: uppercase; }
-
-    /* ── Partners ── */
-    .partners {
-      display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap;
-    }
-    .partner-pill {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--bg-dark); padding: 10px 18px; border-radius: 20px;
-      border: 3px solid var(--border-color); font-size: 0.9rem; font-weight: 600;
-      color: var(--text-main); text-decoration: none; transition: all 0.2s;
-    }
-    .partner-pill:hover { border-color: var(--accent); text-decoration: none; color: var(--text-main); }
-    .partner-pill i { font-size: 0.9rem; }
-
-    /* ── Servers Tab ── */
-    .server-card {
-      display: flex; align-items: center; justify-content: space-between;
-      background: var(--bg-dark); padding: 16px 20px; border-radius: 4px;
-      border: 3px solid var(--border-color); margin-bottom: 12px;
-      box-shadow: 0 4px 0 var(--bg-dark); transition: transform 0.2s;
-    }
-    .server-card:hover { transform: translateY(-2px); }
-    .server-name { font-weight: 700; font-size: 1.1rem; }
-    .server-ip { font-size: 0.85rem; color: var(--accent-light); margin-top: 3px; letter-spacing: 0.5px; }
-    .server-status { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
-    .server-status .dot { width: 10px; height: 10px; border-radius: 50%; }
-
-    /* ── Gallery ── */
-    .gal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
-    .gal-card {
-      background: var(--bg-dark); border: 3px solid var(--border-color); border-radius: 4px;
-      overflow: hidden; cursor: pointer; transition: transform 0.2s;
-    }
-    .gal-card:hover { transform: translateY(-4px); }
-    .gal-img { width: 100%; height: 180px; border-bottom: 3px solid var(--border-color); }
-    .gal-cap { padding: 15px; }
-    .gal-cap h3 { color: var(--accent-light); margin-bottom: 5px; font-size: 1.05rem; }
-    .gal-cap p { font-size: 0.85rem; color: var(--text-main); }
-
-    /* ── Lightbox ── */
-    .lightbox {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.9); z-index: 99999;
-      flex-direction: column; justify-content: center; align-items: center;
-    }
-    .lightbox.active { display: flex; }
-    .lb-wrapper { position: relative; width: 100%; height: 100%; padding: 40px 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .lb-img { max-width: 100%; max-height: 70vh; border: 4px solid var(--border-color); box-shadow: 0 0 30px rgba(85,255,181,0.2); border-radius: 4px; background: var(--bg-dark); }
-    .lb-caption {
-      margin-top: 15px; background: var(--bg-dark); border: 2px solid var(--border-color);
-      border-radius: 6px; padding: 15px 20px; max-width: 800px; width: 100%; text-align: center;
-    }
-    .lb-caption h3 { color: var(--accent-light); margin-bottom: 5px; }
-    .lb-counter {
-      position: absolute; top: 20px; left: 20px; color: var(--text-muted); font-weight: bold;
-      background: rgba(0,0,0,0.5); padding: 5px 12px; border-radius: 20px; border: 2px solid var(--border-color);
-    }
-    .lb-close {
-      position: absolute; top: 15px; right: 25px; color: var(--text-muted);
-      font-size: 45px; cursor: pointer; transition: color 0.2s, transform 0.2s;
-    }
-    .lb-close:hover { color: var(--danger); transform: scale(1.1); }
-    .lb-nav {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      color: var(--text-muted); font-size: 50px; cursor: pointer;
-      padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px;
-      transition: all 0.2s; border: none;
-    }
-    .lb-nav:hover { color: var(--accent); background: rgba(0,0,0,0.6); transform: translateY(-50%) scale(1.1); }
-    .lb-prev { left: 15px; }
-    .lb-next { right: 15px; }
-
-    /* ── Ko-fi Float ── */
-    .kofi-float {
-      position: fixed; bottom: 20px; right: 20px; z-index: 200;
-      display: flex; align-items: center; gap: 8px;
-      background: #ff5e5b; color: #fff; padding: 12px 18px; border-radius: 24px;
-      font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: var(--font-mc);
-      box-shadow: 0 4px 16px rgba(255,94,91,0.4);
-      transition: transform 0.2s; text-decoration: none; color: #fff;
-    }
-    .kofi-float:hover { transform: translateY(-2px); text-decoration: none; color: #fff; }
-
-    /* ── Footer ── */
-    footer { text-align: center; margin-top: 2rem; }
-    footer span {
-      font-size: 1.2rem; font-weight: 700; letter-spacing: 1px;
-      color: var(--bg-panel);
-      text-shadow: 1px 1px 1px var(--border-color), -1px -1px 1px var(--bg-dark), 0 0 1px rgba(0,0,0,0.5);
-    }
-
-    @media (max-width: 768px) {
-      body { padding: 1rem 0.5rem; }
-      .container { padding: 1.5rem; border-width: 3px; border-radius: 0; box-shadow: none; }
-      .server-status-banner { flex-direction: column; gap: 12px; }
-      .ip-info-row { flex-direction: column; text-align: center; gap: 12px; }
-      .btn-copy { width: 100%; }
-      .nav-tab { padding: 10px 4px; font-size: 10px; }
-      .section-title { font-size: 1.2rem; }
-      .btn-discord { width: 100%; font-size: 1rem; padding: 12px 20px; }
-      .authors { grid-template-columns: 1fr; }
-      .gal-grid { grid-template-columns: 1fr; }
-      .lb-wrapper { padding: 60px 10px 20px; }
-      .lb-nav { font-size: 35px; padding: 15px 10px; background: transparent; }
-      .lb-prev { left: 0; } .lb-next { right: 0; }
-    }
-  </style>
+  <title>Blue's SMP</title>
+  <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-
-  <div class="page-load-bar" id="load-bar"></div>
-
-  <div class="container">
-
-    <div class="header-banner">
-      <img src="assets/banner.png" alt="Bluer Network" style="max-width:100%;width:450px;height:auto;" />
-      <h1 style="display:none">Bluer Network</h1>
-      <p class="subtitle">Legacy Console Edition &bull; A network of a lot of things!</p>
-    </div>
-
-    <div class="nav-tabs-wrapper">
-      <div class="nav-tabs">
-        <button class="nav-tab active" onclick="switchTab('home')">
-          <i class="fas fa-home"></i><span>Home</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- HOME TAB -->
-    <div id="home-tab" class="tab-content active">
-
-      <div class="server-ip-box">
-        <div class="server-status-banner">
-          <div class="status-group">
-            <span class="status-dot online" id="s-dot"></span>
-            <span>Status:</span>
-            <span class="status-text-online" id="s-text">Online</span>
-          </div>
-          <div class="player-count-pill">
-            <i class="fas fa-users icon-muted"></i>
-            <span>Players:</span>
-            <span class="player-count-value" id="s-count">-</span>
-          </div>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-line">
-            <span class="label">IP:</span>
-            <span class="value">bluer-network.ddns.net</span>
-          </div>
-          <button class="btn btn-copy" onclick="copyText('bluer-network.ddns.net', this)">
-            <i class="fas fa-copy"></i> Copy IP
-          </button>
-        </div>
-        <div class="ip-info-row">
-          <div class="ip-line">
-            <span class="label">Port:</span>
-            <span class="value">25565</span>
-          </div>
-          <button class="btn btn-copy" onclick="copyText('25565', this)">
-            <i class="fas fa-copy"></i> Copy Port
-          </button>
-        </div>
-      </div>
-
-      <div class="discord-banner">
-        <a href="https://discord.gg/x4BuDfpgsE" target="_blank" class="btn btn-discord">
-          <i class="fab fa-discord"></i>
-          <span>Join our Discord!</span>
-        </a>
-      </div>
-
-      <div class="section">
-        <h2 class="section-title"><i class="fas fa-globe"></i> What is Bluer Network?</h2>
-        <div class="info-card">
-          <p>Bluer Network is a Legacy Console Edition multiplayer server. We are one of the oldest running LCE servers with our own authentication system and a laid-back community of players who love Minecraft: Legacy Console Edition.</p>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2 class="section-title"><i classfas fa-play-circle"></i> How to Connect</h2>
-        <div class="steps">
-          <div class="step"><span class="step-num">1</span><span>Join the Discord server via the button above</span></div>
-          <div class="step"><span class="step-num">2</span><span>Complete verification in <span class="mc-code">#how-to-register</span></span></div>
-          <div class="step"><span class="step-num">3</span><span>Post your in-game username in <span class="mc-code">#register-account</span></span></div>
-          <div class="step"><span class="step-num">4</span><span>Join at <span class="mc-code">bluer-network.ddns.net</span> and run <span class="mc-code">/verify &lt;code&gt;</span></span></div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2 class="section-title"><i class="fas fa-shield-alt"></i> Security & Anti-Cheat</h2>
-        <div class="info-card">
-          <ul class="feature-list">
-            <li>
-              <i class="fas fa-lock"></i>
-              <span><strong>Authentication:</strong> Our custom auth system tracks you by UUID, IP, and name — your identity and inventory stay safe even when LCE changes your UUID.</span>
-            </li>
-            <li>
-              <i class="fas fa-gavel"></i>
-              <span><strong>Conduct Policy:</strong> No bigotry, No toxicity. Any slurs are a permanent ban.</span>
-            </li>
-            <li>
-              <i class="fas fa-user-shield"></i>
-              <span><strong>Moderation:</strong> Our moderators keep the server safe and enjoyable for everyone. Report any issues and we'll handle it.</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2 class="section-title"><i class="fas fa-server"></i> Server Details</h2>
-        <div class="server-details-grid">
-          <div class="server-detail-item">
-            <i class="fas fa-code-branch"></i>
-            <div>
-              <div class="detail-label">Version</div>
-              <div class="detail-value">TU31 NeoLegacy</div>
-            </div>
-          </div>
-          <div class="server-detail-item">
-            <i class="fas fa-gamepad"></i>
-            <div>
-              <div class="detail-label">Mode</div>
-              <div class="detail-value">Multiplayer</div>
-            </div>
-          </div>
-          <div class="server-detail-item">
-            <i class="fas fa-server"></i>
-            <div>
-              <div class="detail-label">Uptime</div>
-              <div class="detail-value">24/7</div>
-            </div>
-          </div>
-          <div class="server-detail-item">
-            <i class="fas fa-fist-raised"></i>
-            <div>
-              <div class="detail-label">PvP</div>
-              <div class="detail-value">Enabled</div>
-            </div>
-          </div>
-          <div class="server-detail-item">
-            <i class="fas fa-users"></i>
-            <div>
-              <div class="detail-label">Capacity</div>
-              <div class="detail-value">16 players</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h2 class="section-title"><i class="fas fa-users"></i> Bluer Network Team</h2>
-        <div class="authors">
-          <div class="author-card">
-            <div class="author-name">Bluerworker</div>
-            <div class="author-role">Owner & Dev</div>
-          </div>
-          <div class="author-card">
-            <div class="author-name">Viper</div>
-            <div class="author-role">Owner</div>
-          </div>
-          <div class="author-card">
-            <div class="author-name">dydymiku_</div>
-            <div class="author-role">Moderator</div>
-          </div>
-          <div class="author-card">
-            <div class="author-name">Vin</div>
-            <div class="author-role">Moderator</div>
-          </div>
-          <div class="author-card">
-            <div class="author-name">The Community</div>
-            <div class="author-role">Supporters & Players</div>
-          </div>
-        </div>
-      </div>
-
-
-
-      <div class="info-note">
-        <i class="fas fa-info-circle"></i>
-        <span>This project is created by fans of Legacy Console Edition and is not affiliated with Mojang or Microsoft.</span>
-      </div>
-    </div>
-
-    <footer>
-      <span>© 2026 Bluer Network.</span>
-    </footer>
+  <div class="overlay-dirt" aria-hidden="true"></div>
+  <div class="overlay-vignette" aria-hidden="true"></div>
+  <div class="crack-overlay" id="crack-overlay" aria-hidden="true"><canvas id="crack-canvas"></canvas></div>
+  <div class="break-flash" id="break-flash" aria-hidden="true"></div>
+  <div class="shatter-container" id="shatter-container" aria-hidden="true"></div>
+  <div class="secret-reveal" id="secret-reveal">
+    <span class="achievement-icon">&#x1F4A5;</span>
+    <span class="achievement-title">Achievement Unlocked!</span>
+    <span class="achievement-name">Desktop Destroyer</span>
+    <span class="achievement-desc">You broke the entire screen.</span>
+    <button class="mc-btn restart-btn" onclick="resetBreakingEffect()">Try Again</button>
   </div>
-
-  <a href="https://ko-fi.com/bluerworker" target="_blank" class="kofi-float">
-    <i class="fas fa-heart"></i> Ko-fi
+  <main class="screen">
+    <header class="logo-block">
+      <h1 class="logo-title">Bluer Network</h1>
+      <p class="logo-sub">Legacy Console Edition &bull; A network of a lot of things!</p>
+    </header>
+    <div class="status-bar">
+      <div class="status-pill">
+        <span class="status-led" id="status-led"></span>
+        <span id="status-text">Connecting...</span>
+      </div>
+      <div class="status-pill">
+        <span id="player-count">-</span>
+        <span class="status-label">players online</span>
+      </div>
+    </div>
+    <div class="ip-row">
+      <span class="ip-label">Server IP</span>
+      <span class="ip-addr">bluer-network.ddns.net</span>
+      <span class="ip-port">:25565</span>
+    </div>
+    <nav class="btn-stack">
+      <button class="mc-btn" onclick="copyIP(this)">Copy IP Address</button>
+      <div class="btn-divider"></div>
+      <button class="mc-btn" onclick="openModal('connect')">How to Connect</button>
+      <div class="btn-row">
+        <button class="mc-btn mc-btn--half" onclick="openModal('about')">About</button>
+        <button class="mc-btn mc-btn--half" onclick="openModal('team')">Server Team</button>
+      </div>
+      <div class="btn-row">
+        <button class="mc-btn mc-btn--half" onclick="openModal('info')">Rules &amp; FAQ</button>
+      </div>
+      <div class="btn-divider"></div>
+      <a href="https://discord.gg/x4BuDfpgsE" target="_blank" rel="noopener" class="mc-btn">Join our Discord</a>
+      <button class="mc-btn" id="music-btn" onclick="toggleMusic()"><span id="music-label">Play Music</span></button>
+      <div class="btn-divider"></div>
+      <button class="mc-btn mc-btn--secret" onclick="triggerBreakingEffect()">???</button>
+    </nav>
+    <footer class="site-footer">
+      Not affiliated with Mojang or Microsoft.
+    </footer>
+  </main>
+  <a href="https://ko-fi.com/bluerworker" target="_blank" rel="noopener" class="lcen-badge">
+    <img src="assets/kofi.png" alt="Ko-fi Logo" class="lcen-logo" />
+    <div class="lcen-text">
+      <span class="lcen-partner">Support us on</span>
+      <span class="lcen-name">Ko-fi</span>
+    </div>
   </a>
 
-  <script>
-    // Load bar
-    const bar = document.getElementById('load-bar');
-    let w = 0;
-    const iv = setInterval(() => {
-      w += Math.random() * 15;
-      if (w > 85) w = 85;
-      bar.style.width = w + '%';
-    }, 200);
-    window.addEventListener('load', () => {
-      clearInterval(iv);
-      bar.style.width = '100%';
-      setTimeout(() => { bar.style.opacity = '0'; }, 300);
-      setTimeout(() => { bar.style.display = 'none'; }, 600);
-    });
-
-    // Tabs
-    function switchTab(name) {
-      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-      document.getElementById(name + '-tab').classList.add('active');
-      event.target.closest('.nav-tab').classList.add('active');
-    }
-
-    // Copy
-    function copyText(text, btn) {
-      navigator.clipboard.writeText(text).then(() => {
-        const orig = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-        setTimeout(() => { btn.innerHTML = orig; }, 2000);
-      }).catch(() => {
-        const inp = document.createElement('input');
-        inp.value = text;
-        document.body.appendChild(inp);
-        inp.select();
-        document.execCommand('copy');
-        document.body.removeChild(inp);
-        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-        setTimeout(() => { btn.innerHTML = orig; }, 2000);
-      });
-    }
-
-    // Status
-    async function fetchStatus() {
-      try {
-        const res = await fetch('https://bluer-network.ddns.net/api/players');
-        const data = await res.json();
-        const now = Math.floor(Date.now() / 1000);
-        // Normalize: some plugins emit epoch milliseconds instead of seconds.
-        // A seconds-based timestamp for "now" is ~10 digits; ms is ~13 digits.
-        const rawTime = data.time || 0;
-        const t = rawTime > 1e12 ? Math.floor(rawTime / 1000) : rawTime;
-        if (!t || (now - t) < 60) {
-          document.getElementById('s-dot').className = 'status-dot online';
-          document.getElementById('s-text').textContent = 'Online';
-          document.getElementById('s-text').className = 'status-text-online';
-          document.getElementById('s-count').textContent = data.count ?? 0;
-        } else { throw new Error(); }
-      } catch {
-        document.getElementById('s-dot').className = 'status-dot offline';
-        document.getElementById('s-text').textContent = 'Offline';
-        document.getElementById('s-text').className = 'status-text-offline';
-        document.getElementById('s-count').textContent = '0';
-      }
-    }
-    fetchStatus();
-    setInterval(fetchStatus, 15000);
-
-  </script>
-
+  <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title"></h2>
+        <button class="modal-x" onclick="closeModal()" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-footer">
+        <button class="mc-btn modal-done" onclick="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+  <audio id="bgm" loop preload="auto"><source src="assets/oldpage/music.mp3" type="audio/mpeg"></audio>
+  <script src="assets/app.js"></script>
 </body>
 </html>
