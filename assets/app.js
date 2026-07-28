@@ -31,7 +31,7 @@ const MODALS = {
           <div class="step"><span class="step-num">1</span><span>Join the Discord server via the button on the main screen</span></div>
           <div class="step"><span class="step-num">2</span><span>Complete verification in <span class="mc-code">#how-to-register</span></span></div>
           <div class="step"><span class="step-num">3</span><span>Post your in-game username in <span class="mc-code">#register-account</span></span></div>
-          <div class="step"><span class="step-num">4</span><span>Join at <span class="mc-code">blues-smp.ddns.net</span> and run <span class="mc-code">/verify &lt;code&gt;</span></span></div>
+          <div class="step"><span class="step-num">4</span><span>Join at <span class="mc-code">bluer-network.ddns.net</span> and run <span class="mc-code">/verify &lt;code&gt;</span></span></div>
         </div>
       `;
     }
@@ -118,7 +118,7 @@ window.closeModal = closeModal;
 
 
 window.copyIP = function(btn) {
-  const ip   = 'blues-.ddns.net';
+  const ip   = 'bluer-network.ddns.net';
   const orig = btn.innerHTML;
   navigator.clipboard.writeText(ip).then(() => {
     btn.textContent = 'Copied!';
@@ -154,10 +154,13 @@ async function fetchStatus() {
   const text  = $('status-text');
   const count = $('player-count');
   try {
-    const res  = await fetch('/api/players');
+    const res  = await fetch('https://bluer-network.ddns.net/api/players');
     const data = await res.json();
     const now  = Math.floor(Date.now() / 1000);
-    if (!data.time || (now - data.time) < 30) {
+    // Normalize: the plugin emits epoch milliseconds, not seconds.
+    const rawTime = data.time || 0;
+    const t = rawTime > 1e12 ? Math.floor(rawTime / 1000) : rawTime;
+    if (!t || (now - t) < 60) {
       led.className     = 'status-led online';
       text.textContent  = 'Online';
       text.className    = 'online';
@@ -179,7 +182,7 @@ async function fetchChat(targetId) {
   const box = $(targetId);
   if (!box) return;
   try {
-    const res  = await fetch('/api/chat');
+    const res  = await fetch('https://bluer-network.ddns.net/api/chat');
     const data = await res.json();
     const msgs = data.messages ?? [];
     if (!msgs.length) { box.innerHTML = '<p class="chat-empty">No messages yet.</p>'; return; }
